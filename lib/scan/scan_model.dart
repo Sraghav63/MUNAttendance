@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -17,7 +16,10 @@ class ScanModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  var valueScanned = '';
+  final formKey = GlobalKey<FormState>();
+  // State field(s) for TextField widget.
+  TextEditingController? textController;
+  String? Function(BuildContext, String?)? textControllerValidator;
   Completer<List<AttendanceRow>>? requestCompleter;
   AudioPlayer? soundPlayer1;
   AudioPlayer? soundPlayer2;
@@ -28,6 +30,7 @@ class ScanModel extends FlutterFlowModel {
 
   void dispose() {
     unfocusNode.dispose();
+    textController?.dispose();
   }
 
   /// Action blocks are added here.

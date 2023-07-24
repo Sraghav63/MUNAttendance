@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -31,6 +30,8 @@ class _ScanWidgetState extends State<ScanWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ScanModel());
+
+    _model.textController ??= TextEditingController();
   }
 
   @override
@@ -88,17 +89,6 @@ class _ScanWidgetState extends State<ScanWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 36.0, 0.0),
-                      child: Text(
-                        'Scan:',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
@@ -117,56 +107,75 @@ class _ScanWidgetState extends State<ScanWidget> {
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
-                        FlutterFlowIconButton(
-                          borderColor: Color(0xFFE0E3E7),
-                          borderRadius: 30.0,
-                          borderWidth: 2.0,
-                          buttonSize: 44.0,
-                          fillColor: Colors.white,
-                          icon: Icon(
-                            Icons.qr_code_scanner_outlined,
-                            color: Color(0xFF14181B),
-                            size: 20.0,
-                          ),
-                          onPressed: () async {
-                            _model.valueScanned =
-                                await FlutterBarcodeScanner.scanBarcode(
-                              '#C62828', // scanning line color
-                              'Cancel', // cancel button text
-                              true, // whether to show the flash icon
-                              ScanMode.QR,
-                            );
-
-                            setState(() {});
-                          },
-                        ),
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 0.0, 20.0),
-                        child: Text(
-                          valueOrDefault<String>(
-                            _model.valueScanned,
-                            'Scan to continue',
+                  Form(
+                    key: _model.formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Align(
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(8.0, 10.0, 8.0, 0.0),
+                        child: TextFormField(
+                          controller: _model.textController,
+                          autofocus: true,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText:
+                                'Enter QR Value as Scanned on third party app',
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  fontSize: 15.0,
+                                ),
+                            hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).secondary,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primary,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Outfit',
-                                    fontSize: 45.0,
-                                  ),
+                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          textAlign: TextAlign.center,
+                          validator: _model.textControllerValidator
+                              .asValidator(context),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  Text(
-                    'Search after scan:',
-                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                    child: Text(
+                      'Search after scan:',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -184,6 +193,10 @@ class _ScanWidgetState extends State<ScanWidget> {
                           size: 36.0,
                         ),
                         onPressed: () async {
+                          if (_model.formKey.currentState == null ||
+                              !_model.formKey.currentState!.validate()) {
+                            return;
+                          }
                           setState(() => _model.requestCompleter = null);
                           await _model.waitForRequestCompleted();
                         },
@@ -228,7 +241,7 @@ class _ScanWidgetState extends State<ScanWidget> {
                                     ..complete(AttendanceTable().querySingleRow(
                                       queryFn: (q) => q.eq(
                                         'QR Value',
-                                        _model.valueScanned,
+                                        _model.textController.text,
                                       ),
                                     )))
                               .future,
@@ -263,7 +276,7 @@ class _ScanWidgetState extends State<ScanWidget> {
                                     future: AttendanceTable().queryRows(
                                       queryFn: (q) => q.eq(
                                         'QR Value',
-                                        _model.valueScanned,
+                                        _model.textController.text,
                                       ),
                                     ),
                                     builder: (context, snapshot) {
@@ -456,7 +469,8 @@ class _ScanWidgetState extends State<ScanWidget> {
                                                       matchingRows: (rows) =>
                                                           rows.eq(
                                                         'QR Value',
-                                                        _model.valueScanned,
+                                                        _model.textController
+                                                            .text,
                                                       ),
                                                     );
                                                     _model.soundPlayer1 ??=
@@ -617,7 +631,9 @@ class _ScanWidgetState extends State<ScanWidget> {
                                                           matchingRows:
                                                               (rows) => rows.eq(
                                                             'QR Value',
-                                                            _model.valueScanned,
+                                                            _model
+                                                                .textController
+                                                                .text,
                                                           ),
                                                         );
                                                         _model.soundPlayer2 ??=
