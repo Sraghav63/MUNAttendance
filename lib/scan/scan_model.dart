@@ -1,9 +1,11 @@
 import '/backend/supabase/supabase.dart';
+import '/components/card15_dashboard_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,7 +21,6 @@ class ScanModel extends FlutterFlowModel {
   Completer<List<AttendanceRow>>? requestCompleter;
   AudioPlayer? soundPlayer1;
   AudioPlayer? soundPlayer2;
-  AudioPlayer? soundPlayer3;
 
   /// Initialization and disposal methods.
 

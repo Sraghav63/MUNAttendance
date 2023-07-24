@@ -99,7 +99,7 @@ class _CommiteesortCopyWidgetState extends State<CommiteesortCopyWidget> {
                     child: FlutterFlowDropDown<String>(
                       controller: _model.dropDownValueController ??=
                           FormFieldController<String>(null),
-                      options: ['Internal', 'External', 'Group'],
+                      options: ['Internal', 'External', 'Delegation'],
                       onChanged: (val) =>
                           setState(() => _model.dropDownValue = val),
                       width: 300.0,

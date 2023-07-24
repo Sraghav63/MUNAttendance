@@ -59,4 +59,8 @@ class AttendanceRow extends SupabaseDataRow {
   String? get delegegatetype => getField<String>('Delegegatetype');
   set delegegatetype(String? value) =>
       setField<String>('Delegegatetype', value);
+
+  String? get delegationSchool => getField<String>('DelegationSchool');
+  set delegationSchool(String? value) =>
+      setField<String>('DelegationSchool', value);
 }

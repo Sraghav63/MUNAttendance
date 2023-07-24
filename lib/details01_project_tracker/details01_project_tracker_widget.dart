@@ -102,6 +102,13 @@ class _Details01ProjectTrackerWidgetState
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                    child: Text(
+                      'Refresh List:- ',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                  Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 10.0, 0.0),
                     child: FFButtonWidget(
@@ -276,7 +283,7 @@ class _Details01ProjectTrackerWidgetState
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: DefaultTabController(
-                    length: 3,
+                    length: 2,
                     initialIndex: 0,
                     child: Column(
                       children: [
@@ -290,7 +297,7 @@ class _Details01ProjectTrackerWidgetState
                                 .override(
                                   fontFamily: 'Plus Jakarta Sans',
                                   color: Colors.white,
-                                  fontSize: 13.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                             unselectedLabelStyle: FlutterFlowTheme.of(context)
@@ -298,7 +305,7 @@ class _Details01ProjectTrackerWidgetState
                                 .override(
                                   fontFamily: 'Plus Jakarta Sans',
                                   color: Colors.white,
-                                  fontSize: 13.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                             labelColor: Color(0xFF4B39EF),
@@ -316,10 +323,7 @@ class _Details01ProjectTrackerWidgetState
                                 text: 'Pending',
                               ),
                               Tab(
-                                text: 'Entered at Gate',
-                              ),
-                              Tab(
-                                text: 'Entered at Block',
+                                text: 'Entered ',
                               ),
                             ],
                           ),
@@ -441,10 +445,7 @@ class _Details01ProjectTrackerWidgetState
                                                     'Attended',
                                                     true,
                                                   )
-                                                  .eq(
-                                                    'Attended2atOmega',
-                                                    false,
-                                                  ),
+                                                  .order('Time Entered'),
                                             )))
                                       .future,
                                   builder: (context, snapshot) {
@@ -501,95 +502,10 @@ class _Details01ProjectTrackerWidgetState
                                                         .titleLarge,
                                               ),
                                               subtitle: Text(
-                                                listViewAttendanceRow.email!,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium,
-                                              ),
-                                              trailing: Icon(
-                                                Icons.arrow_forward_ios,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                size: 20.0,
-                                              ),
-                                              tileColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryBackground,
-                                              dense: false,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 10.0, 0.0, 0.0),
-                                child: FutureBuilder<List<AttendanceRow>>(
-                                  future: AttendanceTable().queryRows(
-                                    queryFn: (q) => q.eq(
-                                      'Attended2atOmega',
-                                      true,
-                                    ),
-                                  ),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          child: SpinKitRipple(
-                                            color: Color(0xFF101213),
-                                            size: 50.0,
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    List<AttendanceRow>
-                                        listViewAttendanceRowList =
-                                        snapshot.data!;
-                                    return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount:
-                                          listViewAttendanceRowList.length,
-                                      itemBuilder: (context, listViewIndex) {
-                                        final listViewAttendanceRow =
-                                            listViewAttendanceRowList[
-                                                listViewIndex];
-                                        return Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 5.0, 0.0, 0.0),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              context.pushNamed(
-                                                'Details11EventTicket',
-                                                queryParameters: {
-                                                  'passing': serializeParam(
-                                                    listViewAttendanceRow,
-                                                    ParamType.SupabaseRow,
-                                                  ),
-                                                }.withoutNulls,
-                                              );
-                                            },
-                                            child: ListTile(
-                                              title: Text(
-                                                listViewAttendanceRow.name!,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge,
-                                              ),
-                                              subtitle: Text(
-                                                listViewAttendanceRow.email!,
+                                                dateTimeFormat(
+                                                    'jm',
+                                                    listViewAttendanceRow
+                                                        .timeEntered!),
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .labelMedium,
