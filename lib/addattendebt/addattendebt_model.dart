@@ -1,9 +1,11 @@
 import '/backend/supabase/supabase.dart';
+import '/components/card15_dashboard_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/random_data_util.dart' as random_data;
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,8 +32,6 @@ class AddattendebtModel extends FlutterFlowModel {
   // State field(s) for TextField widget.
   TextEditingController? textController5;
   String? Function(BuildContext, String?)? textController5Validator;
-  // State field(s) for Switch widget.
-  bool? switchValue;
   AudioPlayer? soundPlayer;
 
   /// Initialization and disposal methods.

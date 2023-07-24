@@ -1,9 +1,11 @@
 import '/backend/supabase/supabase.dart';
+import '/components/card15_dashboard_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -163,7 +165,7 @@ class _ScanWidgetState extends State<ScanWidget> {
                     ],
                   ),
                   Text(
-                    'Search:',
+                    'Search after scan:',
                     style: FlutterFlowTheme.of(context).bodyMedium,
                   ),
                   Row(
@@ -427,211 +429,137 @@ class _ScanWidgetState extends State<ScanWidget> {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      16.0, 8.0, 16.0, 12.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  await AttendanceTable()
-                                                      .update(
-                                                    data: {
-                                                      'Attended': true,
-                                                      'Time Entered':
-                                                          supaSerialize<
-                                                                  DateTime>(
-                                                              getCurrentTimestamp),
-                                                    },
-                                                    matchingRows: (rows) =>
-                                                        rows.eq(
-                                                      'QR Value',
-                                                      _model.valueScanned,
-                                                    ),
-                                                  );
+                                            child: Builder(
+                                              builder: (context) => Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        16.0, 8.0, 16.0, 12.0),
+                                                child: InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  focusColor:
+                                                      Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () async {
+                                                    await AttendanceTable()
+                                                        .update(
+                                                      data: {
+                                                        'Attended': true,
+                                                        'Time Entered':
+                                                            supaSerialize<
+                                                                    DateTime>(
+                                                                getCurrentTimestamp),
+                                                      },
+                                                      matchingRows: (rows) =>
+                                                          rows.eq(
+                                                        'QR Value',
+                                                        _model.valueScanned,
+                                                      ),
+                                                    );
+                                                    _model.soundPlayer1 ??=
+                                                        AudioPlayer();
+                                                    if (_model.soundPlayer1!
+                                                        .playing) {
+                                                      await _model.soundPlayer1!
+                                                          .stop();
+                                                    }
+                                                    _model.soundPlayer1!
+                                                        .setVolume(1.0);
+                                                    _model.soundPlayer1!
+                                                        .setAsset(
+                                                            'assets/audios/system-error-notice-132470.mp3')
+                                                        .then((_) => _model
+                                                            .soundPlayer1!
+                                                            .play());
 
-                                                  context
-                                                      .pushNamed('Onboarding1');
-
-                                                  _model.soundPlayer1 ??=
-                                                      AudioPlayer();
-                                                  if (_model
-                                                      .soundPlayer1!.playing) {
-                                                    await _model.soundPlayer1!
-                                                        .stop();
-                                                  }
-                                                  _model.soundPlayer1!
-                                                      .setVolume(1.0);
-                                                  await _model.soundPlayer1!
-                                                      .setAsset(
-                                                          'assets/audios/system-error-notice-132470.mp3')
-                                                      .then((_) => _model
-                                                          .soundPlayer1!
-                                                          .play());
-                                                },
-                                                child: Container(
-                                                  width: 34.0,
-                                                  height: 50.0,
-                                                  decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 4.0,
-                                                        color:
-                                                            Color(0x33000000),
-                                                        offset:
-                                                            Offset(0.0, 2.0),
-                                                      )
-                                                    ],
-                                                    gradient: LinearGradient(
-                                                      colors: [
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent2
-                                                      ],
-                                                      stops: [0.0, 1.0],
-                                                      begin:
+                                                    await showAlignedDialog(
+                                                      context: context,
+                                                      isGlobal: true,
+                                                      avoidOverflow: false,
+                                                      targetAnchor:
                                                           AlignmentDirectional(
-                                                              -1.0, 0.0),
-                                                      end: AlignmentDirectional(
-                                                          1.0, 0),
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0.0, 0.0),
-                                                  child: Text(
-                                                    'Log Entry @Gate',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      16.0, 8.0, 16.0, 12.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  await AttendanceTable()
-                                                      .update(
-                                                    data: {
-                                                      'Attended2atOmega': true,
-                                                      'Timentered2atOmega':
-                                                          supaSerialize<
-                                                                  DateTime>(
-                                                              getCurrentTimestamp),
-                                                    },
-                                                    matchingRows: (rows) => rows
-                                                        .eq(
-                                                          'QR Value',
-                                                          _model.valueScanned,
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      followerAnchor:
+                                                          AlignmentDirectional(
+                                                                  0.0, -1.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      builder: (dialogContext) {
+                                                        return Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () => FocusScope
+                                                                    .of(context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode),
+                                                            child:
+                                                                Card15DashboardWidget(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        setState(() {}));
+                                                  },
+                                                  child: Container(
+                                                    width: 34.0,
+                                                    height: 50.0,
+                                                    decoration: BoxDecoration(
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          blurRadius: 4.0,
+                                                          color:
+                                                              Color(0x33000000),
+                                                          offset:
+                                                              Offset(0.0, 2.0),
                                                         )
-                                                        .eq(
-                                                          'Attended',
-                                                          true,
-                                                        ),
-                                                  );
-
-                                                  context
-                                                      .pushNamed('Onboarding1');
-
-                                                  _model.soundPlayer2 ??=
-                                                      AudioPlayer();
-                                                  if (_model
-                                                      .soundPlayer2!.playing) {
-                                                    await _model.soundPlayer2!
-                                                        .stop();
-                                                  }
-                                                  _model.soundPlayer2!
-                                                      .setVolume(1.0);
-                                                  _model.soundPlayer2!
-                                                      .setAsset(
-                                                          'assets/audios/system-error-notice-132470.mp3')
-                                                      .then((_) => _model
-                                                          .soundPlayer2!
-                                                          .play());
-                                                },
-                                                child: Container(
-                                                  width: 34.0,
-                                                  height: 50.0,
-                                                  decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 4.0,
-                                                        color:
-                                                            Color(0x33000000),
-                                                        offset:
-                                                            Offset(0.0, 2.0),
-                                                      )
-                                                    ],
-                                                    gradient: LinearGradient(
-                                                      colors: [
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent2
                                                       ],
-                                                      stops: [0.0, 1.0],
-                                                      begin:
-                                                          AlignmentDirectional(
-                                                              -1.0, 0.0),
-                                                      end: AlignmentDirectional(
-                                                          1.0, 0),
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .accent2
+                                                        ],
+                                                        stops: [0.0, 1.0],
+                                                        begin:
+                                                            AlignmentDirectional(
+                                                                -1.0, 0.0),
+                                                        end:
+                                                            AlignmentDirectional(
+                                                                1.0, 0),
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
                                                     ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0.0, 0.0),
-                                                  child: Text(
-                                                    'Log Entry @Block',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                            0.0, 0.0),
+                                                    child: Text(
+                                                      'Log Entry',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .titleSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Plus Jakarta Sans',
+                                                            color: Colors.white,
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -663,91 +591,126 @@ class _ScanWidgetState extends State<ScanWidget> {
                                               Align(
                                                 alignment: AlignmentDirectional(
                                                     0.0, 0.0),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          30.0, 0.0, 0.0, 0.0),
-                                                  child: FFButtonWidget(
-                                                    onPressed: () async {
-                                                      await AttendanceTable()
-                                                          .update(
-                                                        data: {
-                                                          'Attended': false,
-                                                          'Time Entered':
-                                                              supaSerialize<
-                                                                      DateTime>(
-                                                                  null),
-                                                          'Attended2atOmega':
-                                                              false,
-                                                          'Timentered2atOmega':
-                                                              supaSerialize<
-                                                                      DateTime>(
-                                                                  null),
-                                                        },
-                                                        matchingRows: (rows) =>
-                                                            rows.eq(
-                                                          'QR Value',
-                                                          _model.valueScanned,
-                                                        ),
-                                                      );
+                                                child: Builder(
+                                                  builder: (context) => Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(30.0, 0.0,
+                                                                0.0, 0.0),
+                                                    child: FFButtonWidget(
+                                                      onPressed: () async {
+                                                        await AttendanceTable()
+                                                            .update(
+                                                          data: {
+                                                            'Attended': false,
+                                                            'Time Entered':
+                                                                supaSerialize<
+                                                                        DateTime>(
+                                                                    null),
+                                                            'Attended2atOmega':
+                                                                false,
+                                                            'Timentered2atOmega':
+                                                                supaSerialize<
+                                                                        DateTime>(
+                                                                    null),
+                                                          },
+                                                          matchingRows:
+                                                              (rows) => rows.eq(
+                                                            'QR Value',
+                                                            _model.valueScanned,
+                                                          ),
+                                                        );
+                                                        _model.soundPlayer2 ??=
+                                                            AudioPlayer();
+                                                        if (_model.soundPlayer2!
+                                                            .playing) {
+                                                          await _model
+                                                              .soundPlayer2!
+                                                              .stop();
+                                                        }
+                                                        _model.soundPlayer2!
+                                                            .setVolume(1.0);
+                                                        _model.soundPlayer2!
+                                                            .setAsset(
+                                                                'assets/audios/system-error-notice-132470.mp3')
+                                                            .then((_) => _model
+                                                                .soundPlayer2!
+                                                                .play());
 
-                                                      context.pushNamed(
-                                                          'Onboarding1');
-
-                                                      _model.soundPlayer3 ??=
-                                                          AudioPlayer();
-                                                      if (_model.soundPlayer3!
-                                                          .playing) {
-                                                        await _model
-                                                            .soundPlayer3!
-                                                            .stop();
-                                                      }
-                                                      _model.soundPlayer3!
-                                                          .setVolume(1.0);
-                                                      _model.soundPlayer3!
-                                                          .setAsset(
-                                                              'assets/audios/system-error-notice-132470.mp3')
-                                                          .then((_) => _model
-                                                              .soundPlayer3!
-                                                              .play());
-                                                    },
-                                                    text: 'False Attendance',
-                                                    options: FFButtonOptions(
-                                                      height: 40.0,
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  24.0,
-                                                                  0.0,
-                                                                  24.0,
-                                                                  0.0),
-                                                      iconPadding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      color: Colors.black,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Outfit',
-                                                                color: Colors
-                                                                    .white,
+                                                        await showAlignedDialog(
+                                                          context: context,
+                                                          isGlobal: true,
+                                                          avoidOverflow: false,
+                                                          targetAnchor:
+                                                              AlignmentDirectional(
+                                                                      0.0, 0.0)
+                                                                  .resolve(
+                                                                      Directionality.of(
+                                                                          context)),
+                                                          followerAnchor:
+                                                              AlignmentDirectional(
+                                                                      0.0, -1.0)
+                                                                  .resolve(
+                                                                      Directionality.of(
+                                                                          context)),
+                                                          builder:
+                                                              (dialogContext) {
+                                                            return Material(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              child:
+                                                                  GestureDetector(
+                                                                onTap: () => FocusScope.of(
+                                                                        context)
+                                                                    .requestFocus(
+                                                                        _model
+                                                                            .unfocusNode),
+                                                                child:
+                                                                    Card15DashboardWidget(),
                                                               ),
-                                                      elevation: 3.0,
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 1.0,
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            setState(() {}));
+                                                      },
+                                                      text: 'False Attendance',
+                                                      options: FFButtonOptions(
+                                                        height: 40.0,
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    24.0,
+                                                                    0.0,
+                                                                    24.0,
+                                                                    0.0),
+                                                        iconPadding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        color: Colors.black,
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                        elevation: 3.0,
+                                                        borderSide: BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 1.0,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
                                                       ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
                                                     ),
                                                   ),
                                                 ),

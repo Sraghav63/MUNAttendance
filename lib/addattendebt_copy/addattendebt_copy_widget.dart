@@ -1,8 +1,10 @@
 import '/backend/supabase/supabase.dart';
+import '/components/card15_dashboard_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -234,65 +236,84 @@ class _AddattendebtCopyWidgetState extends State<AddattendebtCopyWidget> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
-                    child: FFButtonWidget(
-                      onPressed: () async {
-                        if (_model.formKey.currentState == null ||
-                            !_model.formKey.currentState!.validate()) {
-                          return;
-                        }
-                        await AttendanceTable().delete(
-                          matchingRows: (rows) => rows
-                              .eq(
-                                'Name',
-                                _model.textController1.text,
-                              )
-                              .eq(
-                                'Email',
-                                _model.textController2.text,
-                              ),
-                        );
-
-                        context.pushNamed('Onboarding1');
-
-                        _model.soundPlayer ??= AudioPlayer();
-                        if (_model.soundPlayer!.playing) {
-                          await _model.soundPlayer!.stop();
-                        }
-                        _model.soundPlayer!.setVolume(1.0);
-                        _model.soundPlayer!
-                            .setAsset(
-                                'assets/audios/system-error-notice-132470.mp3')
-                            .then((_) => _model.soundPlayer!.play());
-                      },
-                      text: 'Submit',
-                      icon: Icon(
-                        Icons.restore_from_trash_sharp,
-                        size: 15.0,
-                      ),
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: 48.0,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0xFF101213),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  fontFamily: 'Plus Jakarta Sans',
-                                  color: Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500,
+                  Builder(
+                    builder: (context) => Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          if (_model.formKey.currentState == null ||
+                              !_model.formKey.currentState!.validate()) {
+                            return;
+                          }
+                          await AttendanceTable().delete(
+                            matchingRows: (rows) => rows
+                                .eq(
+                                  'Name',
+                                  _model.textController1.text,
+                                )
+                                .eq(
+                                  'Email',
+                                  _model.textController2.text,
                                 ),
-                        elevation: 4.0,
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
+                          );
+                          _model.soundPlayer ??= AudioPlayer();
+                          if (_model.soundPlayer!.playing) {
+                            await _model.soundPlayer!.stop();
+                          }
+                          _model.soundPlayer!.setVolume(1.0);
+                          _model.soundPlayer!
+                              .setAsset(
+                                  'assets/audios/system-error-notice-132470.mp3')
+                              .then((_) => _model.soundPlayer!.play());
+
+                          await showAlignedDialog(
+                            context: context,
+                            isGlobal: true,
+                            avoidOverflow: false,
+                            targetAnchor: AlignmentDirectional(0.0, 0.0)
+                                .resolve(Directionality.of(context)),
+                            followerAnchor: AlignmentDirectional(0.0, -1.0)
+                                .resolve(Directionality.of(context)),
+                            builder: (dialogContext) {
+                              return Material(
+                                color: Colors.transparent,
+                                child: GestureDetector(
+                                  onTap: () => FocusScope.of(context)
+                                      .requestFocus(_model.unfocusNode),
+                                  child: Card15DashboardWidget(),
+                                ),
+                              );
+                            },
+                          ).then((value) => setState(() {}));
+                        },
+                        text: 'Submit',
+                        icon: Icon(
+                          Icons.restore_from_trash_sharp,
+                          size: 15.0,
                         ),
-                        borderRadius: BorderRadius.circular(60.0),
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 48.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0xFF101213),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    fontFamily: 'Plus Jakarta Sans',
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                          elevation: 4.0,
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(60.0),
+                        ),
                       ),
                     ),
                   ),

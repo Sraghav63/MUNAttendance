@@ -87,11 +87,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'Onboarding1',
-              path: 'onboarding1',
-              builder: (context, params) => Onboarding1Widget(),
-            ),
-            FFRoute(
               name: 'commiteesort',
               path: 'commiteesort',
               builder: (context, params) => CommiteesortWidget(),
@@ -124,11 +119,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'addattendebtCopy',
               path: 'addattendebtCopy',
               builder: (context, params) => AddattendebtCopyWidget(),
-            ),
-            FFRoute(
-              name: 'Details05Event',
-              path: 'details05Event',
-              builder: (context, params) => Details05EventWidget(),
             ),
             FFRoute(
               name: 'commiteesortCopy',
